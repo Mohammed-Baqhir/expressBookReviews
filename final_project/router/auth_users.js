@@ -14,8 +14,8 @@ const authenticatedUser = (username, password) => {
   return validusers.length > 0;
 };
 
-// Login registered user
-regd_users.post('/login', (req, res) => {
+// Task 8: Login as registered user
+regd_users.post('/login', function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -27,7 +27,7 @@ regd_users.post('/login', (req, res) => {
     return res.status(401).json({ message: "Invalid login. Check username and password." });
   }
 
-  let accessToken = jwt.sign(
+  const accessToken = jwt.sign(
     {
       data: username
     },
@@ -36,8 +36,8 @@ regd_users.post('/login', (req, res) => {
   );
 
   req.session.authorization = {
-    accessToken,
-    username
+    accessToken: accessToken,
+    username: username
   };
 
   return res.status(200).json({
@@ -46,11 +46,10 @@ regd_users.post('/login', (req, res) => {
   });
 });
 
-// Add or modify book review
-regd_users.put('/auth/review/:isbn', (req, res) => {
+// Task 9: Add or modify book review
+regd_users.put('/auth/review/:isbn', function (req, res) {
   const isbn = req.params.isbn;
   const review = req.body.review;
-
   const username = req.session.authorization.username;
 
   if (!books[isbn]) {
@@ -69,10 +68,9 @@ regd_users.put('/auth/review/:isbn', (req, res) => {
   });
 });
 
-// Delete book review
-regd_users.delete('/auth/review/:isbn', (req, res) => {
+// Task 10: Delete book review
+regd_users.delete('/auth/review/:isbn', function (req, res) {
   const isbn = req.params.isbn;
-
   const username = req.session.authorization.username;
 
   if (!books[isbn]) {
@@ -86,11 +84,11 @@ regd_users.delete('/auth/review/:isbn', (req, res) => {
       message: "Review successfully deleted",
       reviews: books[isbn].reviews
     });
-  } else {
-    return res.status(404).json({
-      message: "Review not found for this user"
-    });
   }
+
+  return res.status(404).json({
+    message: "Review not found for this user"
+  });
 });
 
 module.exports.authenticated = regd_users;
