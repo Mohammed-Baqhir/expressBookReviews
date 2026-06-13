@@ -1,8 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-let books = require("../booksdb.js");
-let users = require("../usersdb.js");
+let books = require("./booksdb.js");
+let users = require("./usersdb.js");
 
 const regd_users = express.Router();
 
