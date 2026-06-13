@@ -17,21 +17,20 @@ const auth = require('./router/auth_users.js').authenticated;
 
 app.use('/', routes);
 
-// Middleware to authenticate protected customer routes
 app.use('/customer/auth/*', function authMiddleware(req, res, next) {
   if (req.session.authorization) {
     const token = req.session.authorization.accessToken;
 
-    jwt.verify(token, 'access', (err, user) => {
+    jwt.verify(token, 'access', function (err, user) {
       if (!err) {
         req.user = user;
         next();
       } else {
-        return res.status(403).json({ message: 'User not authenticated' });
+        return res.status(403).json({ message: "User not authenticated" });
       }
     });
   } else {
-    return res.status(403).json({ message: 'User not logged in' });
+    return res.status(403).json({ message: "User not logged in" });
   }
 });
 
@@ -39,6 +38,6 @@ app.use('/customer', auth);
 
 const PORT = 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, function () {
   console.log(`Server is running on port ${PORT}`);
 });
