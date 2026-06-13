@@ -1,7 +1,7 @@
 const express = require('express');
 
-let books = require("../booksdb.js");
-let users = require("../usersdb.js");
+let books = require("./booksdb.js");
+let users = require("./usersdb.js");
 
 const public_users = express.Router();
 
